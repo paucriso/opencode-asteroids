@@ -23,9 +23,6 @@ There is no automated verification; changes must be play-tested manually.
 - Global state machine: `state` ∈ `'playing' | 'dead' | 'gameover'`; `update(dt)` branches on it, `initGame()` resets everything.
 - Input: `keys` (held) vs `justPressed` (one-shot). `pressed(code)` **consumes** the flag — call it at most once per frame per key.
 - Toroidal space: all positions go through `wrap(v, max)`; `dt` is clamped to 0.05 s in `loop()`.
-- Entity pattern: each class (`Ship`, `Asteroid`, `Bullet`, `Particle`) has `update(dt)` + `draw()` + a `dead` flag; entity arrays are re-filtered every frame.
+- Entity pattern: each class (`Ship`, `Asteroid`, `Bullet`, `Particle`, `PowerUp`) has `update(dt)` + `draw()` + a `dead` flag; entity arrays are re-filtered every frame.
 - Asteroid tuning lives in the `RADII`/`SPEEDS`/`POINTS` arrays indexed by size 1–3 (index 0 is an unused placeholder); ship handling constants (`ROT`, `THRUST`, `DRAG`) are inline in `Ship.update()`.
-
-## Docs caveat
-
-The README's description mentions power-ups and a special "estrella fugaz" asteroid type — **neither is implemented** in `game.js`. Trust the code over the README.
+- Power-ups: `PowerUp` items drop from destroyed asteroids (10% chance, max 2 on screen, 10 s TTL with a blinking warning); the active effect is a countdown on the ship (`Ship.speedBoost`, in seconds, refreshed on re-pickup). `Particle` takes an optional `color` (defaults to white).
